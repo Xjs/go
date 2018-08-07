@@ -136,19 +136,19 @@ func findlib(ctxt *Link, lib string) (string, bool) {
 			// try dot, -L "libdir", and then goroot.
 			for _, dir := range ctxt.Libdir {
 				if ctxt.linkShared {
-					pname = dir + "/" + pkg + ".shlibname"
+					pname = filepath.Join(dir, filepath.ToSlash(pkg)+".shlibname")
 					if _, err := os.Stat(pname); err == nil {
 						isshlib = true
 						break
 					}
 				}
-				pname = dir + "/" + name
+				pname = filepath.Join(dir, filepath.ToSlash(pkg))
 				if _, err := os.Stat(pname); err == nil {
 					break
 				}
 			}
 		}
-		pname = path.Clean(pname)
+		pname = filepath.Clean(pname)
 	}
 
 	return pname, isshlib
